@@ -130,6 +130,9 @@ body{
   text-size-adjust:100%;
 }
 body.menu-open{overflow:hidden;position:fixed;width:100%;top:0;left:0;right:0}
+/* CRITICAL: prevent any horizontal overflow on mobile */
+html,body{overflow-x:hidden;max-width:100vw;width:100%;position:relative}
+img,video,canvas,svg{max-width:100%;height:auto}
 img{max-width:100%;display:block}
 a{color:inherit;text-decoration:none;transition:all .3s ease}
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
@@ -432,16 +435,19 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 ============================================ */
 .marquee-wrap{
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  padding:2rem 0;overflow:hidden;background:#080808;
+  padding:2rem 0;overflow:hidden;background:#080808;position:relative;max-width:100vw;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
 }
 .marquee-title{
   text-align:center;color:var(--text-mute);font-size:.78rem;
   letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.5rem;font-weight:500;
+  padding:0 1rem;
 }
-.marquee{display:flex;gap:4rem;animation:scroll 35s linear infinite;white-space:nowrap}
-.marquee span{color:var(--text-dim);font-weight:600;font-size:1.05rem;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:.5rem}
+.marquee{display:flex;gap:4rem;animation:scroll 35s linear infinite;white-space:nowrap;will-change:transform;width:max-content}
+.marquee span{color:var(--text-dim);font-weight:600;font-size:1.05rem;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:.5rem;flex-shrink:0}
 .marquee span::before{content:"✦";color:var(--red-2);margin-right:1rem}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
 /* ============================================
    SECTION HEADERS
@@ -572,21 +578,31 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
   background:radial-gradient(ellipse at top left,rgba(225,29,46,.15),transparent 55%);
   pointer-events:none;
 }
-.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;position:relative;z-index:2}
-.sim-left h2{font-size:clamp(1.75rem,3.2vw,2.5rem);margin-bottom:1rem}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;position:relative;z-index:2;min-width:0}
+.sim-left,.sim-right{min-width:0}
+.sim-left h2{font-size:clamp(1.6rem,5.5vw,2.5rem);margin-bottom:1rem;word-break:break-word;overflow-wrap:break-word;hyphens:auto}
 .sim-left p{margin-bottom:1.75rem;max-width:420px}
-.tabs{display:flex;gap:.35rem;background:#0A0A0A;border:1px solid var(--line);padding:.3rem;border-radius:100px;margin-bottom:1.5rem}
+.tabs{display:flex;gap:.35rem;background:#0A0A0A;border:1px solid var(--line);padding:.3rem;border-radius:100px;margin-bottom:1.5rem;min-width:0}
 .tab{
-  flex:1;padding:.7rem .5rem;border-radius:100px;font-size:.85rem;font-weight:600;
-  color:var(--text-dim);transition:all .3s;white-space:nowrap;
+  flex:1 1 0;min-width:0;padding:.7rem .4rem;border-radius:100px;font-size:.85rem;font-weight:600;
+  color:var(--text-dim);transition:all .3s;white-space:nowrap;text-align:center;
+  overflow:hidden;text-overflow:ellipsis;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:.35rem;
+}
+.tab-emoji{flex-shrink:0}
+.tab-label{overflow:hidden;text-overflow:ellipsis;min-width:0}
+@media(max-width:480px){
+  .tab{font-size:.78rem;padding:.65rem .25rem;letter-spacing:-.01em;gap:.25rem}
 }
 @media(max-width:380px){
-  .tab{font-size:.78rem;padding:.6rem .3rem}
+  .tab{font-size:.75rem;padding:.6rem .2rem}
+  .tab-emoji{display:none}
 }
 .tab.active{background:var(--gradient);color:#fff;box-shadow:0 6px 16px rgba(225,29,46,.3)}
-.sim-field{margin-bottom:1.25rem}
-.sim-field label{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:.5rem;color:var(--text-dim);font-weight:500}
-.sim-field .value{color:var(--red-2);font-weight:700}
+.sim-field{margin-bottom:1.25rem;min-width:0}
+.sim-field label{display:flex;justify-content:space-between;gap:.5rem;font-size:.85rem;margin-bottom:.5rem;color:var(--text-dim);font-weight:500;flex-wrap:wrap;min-width:0}
+.sim-field label > span{min-width:0}
+.sim-field .value{color:var(--red-2);font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
 .range{
   width:100%;-webkit-appearance:none;appearance:none;height:8px;
   background:#1A1A1A;border-radius:100px;outline:none;padding:0;margin:8px 0;
@@ -605,13 +621,15 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 .sim-result{
   background:#0A0A0A;border:1px solid var(--line-2);
   border-radius:var(--radius);padding:2rem;display:flex;flex-direction:column;gap:.9rem;
+  min-width:0;overflow:hidden;
 }
-.sim-result h3{font-size:1.05rem;color:var(--red-2);font-weight:600;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid var(--line)}
+.sim-result h3{font-size:1.05rem;color:var(--red-2);font-weight:600;margin-bottom:.3rem;display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;min-width:0}
+.result-row{display:flex;justify-content:space-between;align-items:center;gap:.75rem;padding:.8rem 0;border-bottom:1px solid var(--line);min-width:0;flex-wrap:wrap}
 .result-row:last-of-type{border-bottom:none}
-.result-row span:first-child{color:var(--text-dim);font-size:.9rem}
-.result-row span:last-child{font-weight:700;font-size:1.05rem;font-variant-numeric:tabular-nums}
-.result-row.big span:last-child{font-size:1.8rem;font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.result-row span:first-child{color:var(--text-dim);font-size:.9rem;min-width:0;flex:1 1 auto}
+.result-row span:last-child{font-weight:700;font-size:1.05rem;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.result-row.big{align-items:baseline}
+.result-row.big span:last-child{font-size:clamp(1.35rem,5.2vw,1.8rem);font-weight:800;background:var(--gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap}
 .result-note{font-size:.75rem;color:var(--text-mute);text-align:center;line-height:1.5}
 @media(max-width:900px){.sim-grid{grid-template-columns:1fr}}
 
@@ -1356,9 +1374,9 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
           <p>Comparamos Ademicon com a Tabela SAC de bancos reais (juros efetivos de 10,5% a.a. + TR, seguros MIP/DFI). Os números abaixo são calculados ao vivo.</p>
 
           <div class="tabs" role="tablist" aria-label="Tipo de bem">
-            <button class="tab active" data-type="imovel" role="tab" aria-selected="true">🏡 Imóvel</button>
-            <button class="tab" data-type="veiculo" role="tab" aria-selected="false">🚗 Veículo</button>
-            <button class="tab" data-type="investimento" role="tab" aria-selected="false">💰 Investimento</button>
+            <button class="tab active" data-type="imovel" role="tab" aria-selected="true"><span class="tab-emoji">🏡</span><span class="tab-label">Imóvel</span></button>
+            <button class="tab" data-type="veiculo" role="tab" aria-selected="false"><span class="tab-emoji">🚗</span><span class="tab-label">Veículo</span></button>
+            <button class="tab" data-type="investimento" role="tab" aria-selected="false"><span class="tab-emoji">💰</span><span class="tab-label">Investimento</span></button>
           </div>
 
           <div class="sim-field">
@@ -2225,6 +2243,44 @@ window.addEventListener('resize', () => {
   if (canvas){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 }, {passive:true});
 </script>
+
+</body>
+</html>
+i, .btn').forEach(el => {
+  el.addEventListener('mousemove', (e) => {
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
+    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
+  });
+});
+
+/* ==========================================
+   VIDEO LITE EMBED (click-to-play)
+   Substitua 'SEU_VIDEO_ID' pelo ID real do YouTube
+   ou troque por Vimeo: https://player.vimeo.com/video/ID
+   ========================================== */
+const videoWrap = document.getElementById('videoWrap');
+if (videoWrap){
+  function loadVideo(){
+    const vid = videoWrap.dataset.videoId || 'dQw4w9WgXcQ';
+    videoWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" title="Apresentação Ricardo Almeida Ademicon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+  }
+  videoWrap.addEventListener('click', loadVideo);
+  videoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); loadVideo(); }});
+}
+
+/* ==========================================
+   REPOSICIONAR CONFETTI AO RESIZE
+   ========================================== */
+window.addEventListener('resize', () => {
+  const canvas = document.getElementById('confettiCanvas');
+  if (canvas){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+}, {passive:true});
+</script>
+
+</body>
+</html>
+/script>
 
 </body>
 </html>
