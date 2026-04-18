@@ -298,18 +298,14 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 @media(max-width:900px){
   .nav-links,.nav-cta .btn-ghost{display:none}
   .nav-toggle{display:flex}
-  /* Compact circular WhatsApp button in mobile navbar */
+  /* Compact red WhatsApp button with icon + text (matches desktop style, just slimmer) */
   .nav-cta .nav-whats{
-    padding:0;
-    width:44px;height:44px;min-width:44px;
-    border-radius:50%;
-    background:#25D366;
-    box-shadow:0 6px 16px rgba(37,211,102,.38);
-    gap:0;
+    padding:.6rem 1rem;
+    font-size:.82rem;
+    gap:.4rem;
+    letter-spacing:-.01em;
   }
-  .nav-cta .nav-whats .nav-whats-label{display:none}
-  .nav-cta .nav-whats svg{width:20px;height:20px}
-  .nav-cta .nav-whats::after{display:none}
+  .nav-cta .nav-whats svg{width:15px;height:15px;flex-shrink:0}
   .nav-cta{gap:.6rem}
   .nav-links.mobile-open{
     display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;
@@ -1136,9 +1132,9 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
   .hero-card{padding:1.25rem}
   .hc-amount h3{font-size:1.75rem}
   .float-badge.a,.float-badge.b{display:none}
-  .nav-cta .nav-whats{width:40px;height:40px;min-width:40px}
-  .nav-cta .nav-whats svg{width:18px;height:18px}
-  .nav-inner{gap:.75rem}
+  .nav-cta .nav-whats{padding:.55rem .85rem;font-size:.78rem;gap:.35rem}
+  .nav-cta .nav-whats svg{width:14px;height:14px}
+  .nav-inner{gap:.65rem}
   .hc-head{gap:.5rem;flex-wrap:wrap}
   .hc-chip{font-size:.65rem;padding:.3rem .6rem}
   .section-head h2{font-size:1.65rem}
