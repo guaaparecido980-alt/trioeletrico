@@ -281,17 +281,44 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 @media(max-width:1050px){
   .selo-consultor{display:none}
 }
+
+/* Menu mobile header (apenas dentro do overlay em mobile) */
+.nav-mobile-header,.nav-mobile-cta{display:none}
+.nav-mobile-brand{display:inline-flex;align-items:center;gap:.65rem;font-weight:800;font-size:1.05rem;letter-spacing:-.02em;color:var(--text)}
+.nav-close{
+  width:44px;height:44px;min-width:44px;min-height:44px;
+  border-radius:50%;background:rgba(255,255,255,.06);
+  border:1px solid var(--line-2);color:var(--text);
+  display:grid;place-items:center;cursor:pointer;flex-shrink:0;
+  transition:background .2s,border-color .2s,color .2s,transform .15s;
+}
+.nav-close:active{transform:scale(.92);background:rgba(225,29,46,.2);border-color:var(--red-2);color:var(--red-2)}
+@media (hover:hover){.nav-close:hover{background:rgba(225,29,46,.15);border-color:var(--red-2);color:var(--red-2)}}
+
 @media(max-width:900px){
   .nav-links,.nav-cta .btn-ghost{display:none}
   .nav-toggle{display:flex}
   .nav-links.mobile-open{
     display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;
     width:100%;height:100vh;height:100dvh;
-    background:#0A0A0A;padding:6rem 2rem 2rem;gap:1.25rem;z-index:95;
+    background:#0A0A0A;
+    padding:1.25rem 1.5rem calc(2rem + env(safe-area-inset-bottom,0px));
+    padding-top:calc(1.25rem + env(safe-area-inset-top,0px));
+    gap:.25rem;z-index:200;list-style:none;margin:0;
     overflow-y:auto;-webkit-overflow-scrolling:touch;
     animation:menu-slide .25s ease-out;
   }
-  .nav-links.mobile-open a{font-size:1.25rem;padding:.75rem 0;border-bottom:1px solid var(--line)}
+  .nav-links.mobile-open .nav-mobile-header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:.5rem 0 1.25rem;margin-bottom:.5rem;border-bottom:1px solid var(--line);
+  }
+  .nav-links.mobile-open li{list-style:none}
+  .nav-links.mobile-open > li:not(.nav-mobile-header):not(.nav-mobile-cta) a{
+    display:block;font-size:1.15rem;padding:1rem 0;
+    border-bottom:1px solid var(--line);color:var(--text);font-weight:500;
+  }
+  .nav-links.mobile-open .nav-mobile-cta{display:block;margin-top:1.5rem}
+  .nav-links.mobile-open .nav-mobile-cta .btn{width:100%;padding:1rem;font-size:1rem}
 }
 @keyframes menu-slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
@@ -1100,11 +1127,26 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
     </div>
     <nav aria-label="Navegação principal">
       <ul class="nav-links" id="navLinks">
+        <li class="nav-mobile-header" aria-hidden="true">
+          <span class="nav-mobile-brand">
+            <span class="logo-mark" aria-hidden="true">A</span>
+            <span>Ademicon <span style="color:var(--text-mute);font-weight:500">| Curitiba</span></span>
+          </span>
+          <button class="nav-close" id="navClose" type="button" aria-label="Fechar menu">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </li>
         <li><a href="#como-funciona">Como funciona</a></li>
         <li><a href="#beneficios">Benefícios</a></li>
         <li><a href="#simulador">Simulador</a></li>
         <li><a href="#oportunidades">Oportunidades</a></li>
         <li><a href="#faq">Dúvidas</a></li>
+        <li class="nav-mobile-cta">
+          <a href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20quero%20saber%20mais" class="btn btn-primary" target="_blank" rel="noopener" data-cta="nav-mobile-whatsapp" aria-label="Falar no WhatsApp">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.74.46 3.43 1.33 4.92L2.05 22l5.3-1.39c1.45.79 3.08 1.21 4.71 1.21h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.8 9.8 0 0012.04 2z"/></svg>
+            Falar no WhatsApp
+          </a>
+        </li>
       </ul>
     </nav>
     <div class="nav-cta">
@@ -1872,6 +1914,7 @@ window.addEventListener('scroll', () => {
    ========================================== */
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
+const navClose = document.getElementById('navClose');
 
 function openMenu(){
   if (!navToggle) return;
@@ -1884,7 +1927,7 @@ function openMenu(){
 }
 
 function closeMenu(){
-  if (!navToggle || !navToggle.classList.contains('open')) return;
+  if (!navToggle) return;
   navToggle.classList.remove('open');
   navLinks.classList.remove('mobile-open');
   navToggle.setAttribute('aria-expanded', 'false');
@@ -1899,6 +1942,13 @@ if (navToggle){
     if (navToggle.classList.contains('open')) closeMenu();
     else openMenu();
   });
+  /* Close button INSIDE the menu overlay */
+  if (navClose){
+    navClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMenu();
+    });
+  }
   /* Anchor links inside the menu: close menu, then scroll to target */
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', (e) => {
     const href = a.getAttribute('href') || '';
