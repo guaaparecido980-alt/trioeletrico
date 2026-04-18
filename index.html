@@ -1268,17 +1268,17 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
     <div class="asp-strip reveal" aria-label="Possibilidades do consórcio">
       <!-- PLACEHOLDER: foto de apartamento/casa premium em Curitiba (1200x1500px recomendado) -->
       <div class="asp-card">
-        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80" alt="Casa moderna adquirida com consórcio imobiliário Ademicon" loading="lazy" decoding="async" />
+        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&auto=format&fit=crop&q=80" alt="Casa moderna adquirida com consórcio imobiliário Ademicon" loading="lazy" decoding="async" width="900" height="1125" />
         <div class="asp-label"><small>Imóveis</small><strong>Casa própria sem juros</strong></div>
       </div>
       <!-- PLACEHOLDER: foto de carro premium (SUV/sedan) -->
       <div class="asp-card">
-        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900&auto=format&fit=crop&q=80" alt="Veículo adquirido através do consórcio automóvel Ademicon" loading="lazy" decoding="async" />
+        <img src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=900&auto=format&fit=crop&q=80" alt="Veículo adquirido através do consórcio automóvel Ademicon" loading="lazy" decoding="async" width="900" height="1125" />
         <div class="asp-label"><small>Veículos</small><strong>Carro dos sonhos</strong></div>
       </div>
       <!-- PLACEHOLDER: foto de investidor/gráficos/dinheiro aspiracional -->
       <div class="asp-card">
-        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&auto=format&fit=crop&q=80" alt="Investimento com consórcio e alavancagem patrimonial" loading="lazy" decoding="async" />
+        <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&auto=format&fit=crop&q=80" alt="Investimento com consórcio e alavancagem patrimonial" loading="lazy" decoding="async" width="900" height="1125" />
         <div class="asp-label"><small>Investimento</small><strong>Alavancagem patrimonial</strong></div>
       </div>
     </div>
@@ -1579,7 +1579,7 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
       <!-- VIDEO LITE EMBED -->
       <div class="video-wrap reveal" id="videoWrap" role="button" tabindex="0" aria-label="Assistir apresentação do consultor">
         <!-- PLACEHOLDER: thumbnail do vídeo ou foto profissional do consultor (900x1200px). Substitua o src abaixo -->
-        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=900&auto=format&fit=crop&q=80" alt="Ricardo Almeida, consultor autorizado Ademicon em Curitiba" loading="lazy" decoding="async" />
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=900&auto=format&fit=crop&q=80" alt="Ricardo Almeida, consultor autorizado Ademicon em Curitiba" loading="lazy" decoding="async" width="900" height="1200" />
         <button class="play-btn" aria-label="Reproduzir vídeo">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg>
         </button>
@@ -2254,7 +2254,7 @@ const videoWrap = document.getElementById('videoWrap');
 if (videoWrap){
   function loadVideo(){
     const vid = videoWrap.dataset.videoId || 'dQw4w9WgXcQ';
-    videoWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0" title="Apresenta" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+    videoWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0" title="Apresentação do consultor Ademicon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
   }
   videoWrap.addEventListener('click', loadVideo);
   videoWrap.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); loadVideo(); }});
