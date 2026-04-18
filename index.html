@@ -129,7 +129,7 @@ body{
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%;
 }
-body.menu-open{overflow:hidden;position:fixed;width:100%;top:0;left:0;right:0}
+body.menu-open{overflow:hidden;position:fixed;width:100%;left:0;right:0}
 /* CRITICAL: prevent any horizontal overflow on mobile */
 html,body{overflow-x:hidden;max-width:100vw;width:100%;position:relative}
 img,video,canvas,svg{max-width:100%;height:auto}
@@ -436,18 +436,19 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 .marquee-wrap{
   border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:2rem 0;overflow:hidden;background:#080808;position:relative;max-width:100vw;
-  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
-  mask-image:linear-gradient(90deg,transparent 0,#000 8%,#000 92%,transparent 100%);
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 12%,#000 88%,transparent 100%);
 }
 .marquee-title{
   text-align:center;color:var(--text-mute);font-size:.78rem;
   letter-spacing:.22em;text-transform:uppercase;margin-bottom:1.5rem;font-weight:500;
   padding:0 1rem;
 }
-.marquee{display:flex;gap:4rem;animation:scroll 35s linear infinite;white-space:nowrap;will-change:transform;width:max-content}
+.marquee{display:flex;gap:4rem;animation:scroll 40s linear infinite;white-space:nowrap;will-change:transform;width:max-content}
 .marquee span{color:var(--text-dim);font-weight:600;font-size:1.05rem;letter-spacing:-.01em;display:inline-flex;align-items:center;gap:.5rem;flex-shrink:0}
 .marquee span::before{content:"✦";color:var(--red-2);margin-right:1rem}
 @keyframes scroll{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+@media (prefers-reduced-motion:reduce){.marquee{animation:none;justify-content:center;flex-wrap:wrap;width:auto;gap:1.5rem;padding:0 1rem}}
 
 /* ============================================
    SECTION HEADERS
@@ -1006,9 +1007,14 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
   footer{padding:3rem 0 1.5rem}
   .footer-grid{gap:2rem;margin-bottom:2rem}
 
-  /* Marquee mais lento em mobile */
-  .marquee{animation-duration:45s}
-  .marquee span{font-size:.92rem}
+  /* Marquee — em mobile vira selos estáticos centralizados (sem correr) */
+  .marquee-wrap{padding:1.5rem 1rem;-webkit-mask-image:none;mask-image:none}
+  .marquee-title{font-size:.72rem;margin-bottom:1rem;letter-spacing:.18em}
+  .marquee{animation:none;width:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem .75rem}
+  .marquee span{font-size:.78rem;white-space:normal;text-align:center}
+  .marquee span::before{content:"✦";margin-right:.4rem;font-size:.7rem}
+  /* mostrar apenas os primeiros 4 selos — o resto é duplicata pro loop desktop */
+  .marquee span:nth-child(n+5){display:none}
 
   /* Nav scroll mais compacto */
   .nav.scrolled{padding:.6rem 0}
@@ -1860,40 +1866,61 @@ window.addEventListener('scroll', () => {
    ========================================== */
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
+let savedScrollY = 0;
+
+function openMenu(){
+  savedScrollY = window.scrollY || window.pageYOffset || 0;
+  navToggle.classList.add('open');
+  navLinks.classList.add('mobile-open');
+  navToggle.setAttribute('aria-expanded', 'true');
+  navToggle.setAttribute('aria-label', 'Fechar menu');
+  document.body.classList.add('menu-open');
+  document.body.style.top = `-${savedScrollY}px`;
+}
+
+function closeMenu(restoreScroll){
+  if (!navToggle.classList.contains('open')) return;
+  navToggle.classList.remove('open');
+  navLinks.classList.remove('mobile-open');
+  navToggle.setAttribute('aria-expanded', 'false');
+  navToggle.setAttribute('aria-label', 'Abrir menu');
+  document.body.classList.remove('menu-open');
+  document.body.style.top = '';
+  if (restoreScroll !== false){
+    // restore the scroll position saved when we opened the menu
+    window.scrollTo(0, savedScrollY);
+  }
+}
+
 if (navToggle){
   navToggle.addEventListener('click', () => {
-    const open = navToggle.classList.toggle('open');
-    navLinks.classList.toggle('mobile-open');
-    navToggle.setAttribute('aria-expanded', open);
-    navToggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
-    document.body.classList.toggle('menu-open', open);
+    if (navToggle.classList.contains('open')) closeMenu(true);
+    else openMenu();
   });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    navToggle.classList.remove('open');
-    navLinks.classList.remove('mobile-open');
-    navToggle.setAttribute('aria-expanded', 'false');
-    navToggle.setAttribute('aria-label', 'Abrir menu');
-    document.body.classList.remove('menu-open');
+  /* When user clicks an anchor link inside the menu, close the menu first,
+     then let the default hash navigation jump to the target — don't restore
+     the old scroll position */
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', (e) => {
+    const href = a.getAttribute('href') || '';
+    closeMenu(false);
+    if (href.startsWith('#')){
+      e.preventDefault();
+      const target = document.querySelector(href);
+      if (target){
+        // small delay so the fixed body unlocks before scrolling
+        requestAnimationFrame(() => {
+          target.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      }
+    }
   }));
   /* Close menu with Escape key */
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && navToggle.classList.contains('open')){
-      navToggle.classList.remove('open');
-      navLinks.classList.remove('mobile-open');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'Abrir menu');
-      document.body.classList.remove('menu-open');
-    }
+    if (e.key === 'Escape') closeMenu(true);
   });
   /* Close menu on resize to desktop */
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 900 && navToggle.classList.contains('open')){
-      navToggle.classList.remove('open');
-      navLinks.classList.remove('mobile-open');
-      navToggle.setAttribute('aria-expanded', 'false');
-      navToggle.setAttribute('aria-label', 'Abrir menu');
-      document.body.classList.remove('menu-open');
-    }
+    if (window.innerWidth > 900) closeMenu(true);
   });
 }
 
