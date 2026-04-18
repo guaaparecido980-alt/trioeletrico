@@ -572,6 +572,66 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 @media(max-width:500px){.steps{grid-template-columns:1fr}}
 
 /* ============================================
+   POR QUE VIA CONSULTOR
+============================================ */
+.why-consultor{background:#080808;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.why-price-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.5rem 1rem;border-radius:100px;
+  background:rgba(37,211,102,.12);
+  border:1px solid rgba(37,211,102,.3);
+  color:#25D366;font-size:.78rem;font-weight:600;letter-spacing:.02em;
+  margin-bottom:1.5rem;
+}
+.why-price-badge::before{content:"✓";font-size:.95rem;font-weight:700}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:stretch}
+.why-card{
+  padding:2.5rem;border-radius:var(--radius);
+  border:1px solid var(--line);background:var(--bg-2);
+  transition:all .4s var(--ease);position:relative;
+  display:flex;flex-direction:column;
+}
+.why-card.neutro{opacity:.82}
+.why-card.premium{
+  border-color:var(--red-dim);
+  background:linear-gradient(145deg,#151010,#0E0E0E);
+  box-shadow:var(--shadow-red);
+}
+.why-card.premium::before{
+  content:"RECOMENDADO";
+  position:absolute;top:-12px;right:1.5rem;
+  padding:.4rem .95rem;border-radius:100px;
+  background:var(--gradient);color:#fff;
+  font-size:.66rem;font-weight:800;letter-spacing:.18em;
+  box-shadow:0 8px 20px rgba(225,29,46,.35);
+}
+.why-card h3{font-size:1.35rem;margin:.25rem 0 1.5rem;display:flex;align-items:center;gap:.6rem}
+.why-tag{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-mute);font-weight:700;display:block}
+.why-card.premium .why-tag{color:var(--red-2)}
+.why-card ul{list-style:none;display:grid;gap:.95rem;margin-top:auto}
+.why-card li{display:flex;gap:.75rem;align-items:flex-start;color:var(--text-dim);font-size:.96rem;line-height:1.55}
+.why-card .ic{
+  width:22px;height:22px;border-radius:50%;flex-shrink:0;margin-top:2px;
+  display:grid;place-items:center;font-size:.8rem;font-weight:700;
+}
+.why-card.neutro .ic{background:rgba(100,116,139,.12);color:#94a3b8}
+.why-card.premium .ic{background:var(--red-dim);color:var(--red-2)}
+.why-footer-note{
+  margin-top:2.5rem;padding:1.5rem 2rem;
+  border:1px dashed var(--line-2);border-radius:var(--radius);
+  text-align:center;background:var(--bg-2);
+  font-size:.95rem;color:var(--text-dim);line-height:1.7;
+}
+.why-footer-note strong{color:var(--text)}
+.why-footer-note .hl{color:var(--red-2);font-weight:700}
+@media(max-width:768px){
+  .why-grid{grid-template-columns:1fr;gap:1.5rem}
+  .why-card{padding:1.75rem 1.5rem}
+  .why-card.premium::before{right:1rem;top:-11px;font-size:.62rem;padding:.35rem .8rem}
+  .why-footer-note{padding:1.25rem;font-size:.9rem;margin-top:2rem}
+}
+
+/* ============================================
    ASPIRATIONAL IMAGE PLACEHOLDERS
 ============================================ */
 .asp-strip{
@@ -1137,6 +1197,7 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
           </button>
         </li>
         <li><a href="#como-funciona">Como funciona</a></li>
+        <li><a href="#por-que-consultor">Por que consultor</a></li>
         <li><a href="#beneficios">Benefícios</a></li>
         <li><a href="#simulador">Simulador</a></li>
         <li><a href="#oportunidades">Oportunidades</a></li>
@@ -1355,6 +1416,49 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
         <h3>Execução da carta</h3>
         <p>Contemplado, você usa a carta como <strong>cash</strong> e negocia 10 a 15% de desconto no bem à vista.</p>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================
+     POR QUE VIA CONSULTOR
+============================================ -->
+<section class="why-consultor" id="por-que-consultor" aria-labelledby="why-title">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="why-price-badge">Mesma taxa oficial Ademicon · Consultoria 100% gratuita</span>
+      <h2 id="why-title">Por que contratar <span class="red-text">pelo consultor?</span></h2>
+      <p>A taxa que você paga direto no site oficial é <strong style="color:var(--text)">idêntica</strong> à que você paga comigo. A diferença não está no preço — está em tudo que acompanha o consórcio.</p>
+    </div>
+
+    <div class="why-grid">
+      <article class="why-card neutro reveal">
+        <span class="why-tag">Direto no site oficial</span>
+        <h3>🏢 Atendimento padrão</h3>
+        <ul>
+          <li><span class="ic" aria-hidden="true">—</span><span>Formulário genérico, sem análise do seu perfil financeiro ou objetivo.</span></li>
+          <li><span class="ic" aria-hidden="true">—</span><span>Retorno em dias úteis pelo canal central, sem vínculo pessoal.</span></li>
+          <li><span class="ic" aria-hidden="true">—</span><span>Grupo sugerido pelo sistema — sem critério de menor taxa ou maior contemplação.</span></li>
+          <li><span class="ic" aria-hidden="true">—</span><span>Você escolhe lance e estratégia sozinho, no escuro.</span></li>
+          <li><span class="ic" aria-hidden="true">—</span><span>Depois de contratar, vira protocolo: nada de acompanhamento mensal.</span></li>
+        </ul>
+      </article>
+
+      <article class="why-card premium reveal">
+        <span class="why-tag">Via consultor autorizado</span>
+        <h3>💎 Consultoria completa</h3>
+        <ul>
+          <li><span class="ic" aria-hidden="true">✓</span><span><strong style="color:#fff">Diagnóstico patrimonial em 30 min</strong> — presencial em Curitiba, vídeo ou WhatsApp.</span></li>
+          <li><span class="ic" aria-hidden="true">✓</span><span>Atendimento em <strong style="color:#fff">minutos</strong> no WhatsApp — direto com quem entende.</span></li>
+          <li><span class="ic" aria-hidden="true">✓</span><span>Escolha cirúrgica do grupo com <strong style="color:#fff">menor taxa</strong> e melhor perfil de contemplação.</span></li>
+          <li><span class="ic" aria-hidden="true">✓</span><span>Estratégia matemática de lance que aumenta em até <strong style="color:#fff">3x</strong> a chance de contemplação antecipada.</span></li>
+          <li><span class="ic" aria-hidden="true">✓</span><span>Acompanhamento até a contemplação + suporte no uso da carta e no <strong style="color:#fff">desconto de 10 a 15%</strong> com o vendedor.</span></li>
+        </ul>
+      </article>
+    </div>
+
+    <div class="why-footer-note reveal">
+      💡 A <strong>comissão do consultor vem da Ademicon</strong>, não de uma camada extra no cliente. Por isso a consultoria é <span class="hl">100% gratuita</span> — meu ganho depende da sua contemplação e da sua indicação. O que eu recomendo é o que realmente funciona pro seu caso.
     </div>
   </div>
 </section>
@@ -1775,6 +1879,7 @@ footer{padding:4rem 0 2rem;background:#060606;border-top:1px solid var(--line)}
         <h4>Navegação</h4>
         <ul>
           <li><a href="#como-funciona">Como funciona</a></li>
+          <li><a href="#por-que-consultor">Por que via consultor</a></li>
           <li><a href="#beneficios">Benefícios</a></li>
           <li><a href="#simulador">Simulador</a></li>
           <li><a href="#oportunidades">Cartas contempladas</a></li>
