@@ -129,7 +129,8 @@ body{
   -webkit-text-size-adjust:100%;
   text-size-adjust:100%;
 }
-body.menu-open{overflow:hidden;position:fixed;width:100%;left:0;right:0}
+body.menu-open{overflow:hidden}
+html.menu-open{overflow:hidden}
 /* CRITICAL: prevent any horizontal overflow on mobile */
 html,body{overflow-x:hidden;max-width:100vw;width:100%;position:relative}
 img,video,canvas,svg{max-width:100%;height:auto}
@@ -284,10 +285,15 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
   .nav-links,.nav-cta .btn-ghost{display:none}
   .nav-toggle{display:flex}
   .nav-links.mobile-open{
-    display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;
-    background:#0A0A0A;padding:2rem;gap:1.5rem;border-bottom:1px solid var(--line);
+    display:flex;flex-direction:column;position:fixed;top:0;left:0;right:0;bottom:0;
+    width:100%;height:100vh;height:100dvh;
+    background:#0A0A0A;padding:6rem 2rem 2rem;gap:1.25rem;z-index:95;
+    overflow-y:auto;-webkit-overflow-scrolling:touch;
+    animation:menu-slide .25s ease-out;
   }
+  .nav-links.mobile-open a{font-size:1.25rem;padding:.75rem 0;border-bottom:1px solid var(--line)}
 }
+@keyframes menu-slide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
 
 /* Selo flutuante lateral em mobile */
 .selo-float{
@@ -1866,48 +1872,41 @@ window.addEventListener('scroll', () => {
    ========================================== */
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
-let savedScrollY = 0;
 
 function openMenu(){
-  savedScrollY = window.scrollY || window.pageYOffset || 0;
+  if (!navToggle) return;
   navToggle.classList.add('open');
   navLinks.classList.add('mobile-open');
   navToggle.setAttribute('aria-expanded', 'true');
   navToggle.setAttribute('aria-label', 'Fechar menu');
+  document.documentElement.classList.add('menu-open');
   document.body.classList.add('menu-open');
-  document.body.style.top = `-${savedScrollY}px`;
 }
 
-function closeMenu(restoreScroll){
-  if (!navToggle.classList.contains('open')) return;
+function closeMenu(){
+  if (!navToggle || !navToggle.classList.contains('open')) return;
   navToggle.classList.remove('open');
   navLinks.classList.remove('mobile-open');
   navToggle.setAttribute('aria-expanded', 'false');
   navToggle.setAttribute('aria-label', 'Abrir menu');
+  document.documentElement.classList.remove('menu-open');
   document.body.classList.remove('menu-open');
-  document.body.style.top = '';
-  if (restoreScroll !== false){
-    // restore the scroll position saved when we opened the menu
-    window.scrollTo(0, savedScrollY);
-  }
 }
 
 if (navToggle){
-  navToggle.addEventListener('click', () => {
-    if (navToggle.classList.contains('open')) closeMenu(true);
+  navToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (navToggle.classList.contains('open')) closeMenu();
     else openMenu();
   });
-  /* When user clicks an anchor link inside the menu, close the menu first,
-     then let the default hash navigation jump to the target — don't restore
-     the old scroll position */
+  /* Anchor links inside the menu: close menu, then scroll to target */
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', (e) => {
     const href = a.getAttribute('href') || '';
-    closeMenu(false);
-    if (href.startsWith('#')){
+    closeMenu();
+    if (href.startsWith('#') && href.length > 1){
       e.preventDefault();
       const target = document.querySelector(href);
       if (target){
-        // small delay so the fixed body unlocks before scrolling
         requestAnimationFrame(() => {
           target.scrollIntoView({behavior:'smooth', block:'start'});
         });
@@ -1916,11 +1915,11 @@ if (navToggle){
   }));
   /* Close menu with Escape key */
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeMenu(true);
+    if (e.key === 'Escape') closeMenu();
   });
   /* Close menu on resize to desktop */
   window.addEventListener('resize', () => {
-    if (window.innerWidth > 900) closeMenu(true);
+    if (window.innerWidth > 900) closeMenu();
   });
 }
 
