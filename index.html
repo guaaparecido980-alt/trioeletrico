@@ -2248,66 +2248,27 @@ document.querySelectorAll('.testi, .btn').forEach(el => {
 });
 
 /* ==========================================
+  
    VIDEO LITE EMBED (click-to-play)
-   Substitua 'SEU_VIDEO_ID' pelo ID real do YouTube
-   ou troque por Vimeo: https://player.vimeo.com/video/ID
-   ========================================== */
-const videoWrap = document.getElementById('videoWrap');
-if (videoWrap){
-  function loadVideo(){
-    const vid = videoWrap.dataset.videoId || 'dQw4w9WgXcQ'; // substitua pelo ID real
-    videoWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" title="Apresentação Ricardo Almeida Ademicon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-  }
-  videoWrap.addEventListener('click', loadVideo);
-  videoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); loadVideo(); }});
-}
-
-/* ==========================================
-   REPOSICIONAR CONFETTI AO RESIZE
-   ========================================== */
-window.addEventListener('resize', () => {
-  const canvas = document.getElementById('confettiCanvas');
-  if (canvas){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-}, {passive:true});
-</script>
-
-</body>
-</html>
-i, .btn').forEach(el => {
-  el.addEventListener('mousemove', (e) => {
-    const r = el.getBoundingClientRect();
-    el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100) + '%');
-    el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100) + '%');
-  });
-});
-
-/* ==========================================
-   VIDEO LITE EMBED (click-to-play)
-   Substitua 'SEU_VIDEO_ID' pelo ID real do YouTube
-   ou troque por Vimeo: https://player.vimeo.com/video/ID
    ========================================== */
 const videoWrap = document.getElementById('videoWrap');
 if (videoWrap){
   function loadVideo(){
     const vid = videoWrap.dataset.videoId || 'dQw4w9WgXcQ';
-    videoWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${vid}?autoplay=1&rel=0" title="Apresentação Ricardo Almeida Ademicon" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
+    videoWrap.innerHTML = '<iframe src="https://www.youtube.com/embed/' + vid + '?autoplay=1&rel=0" title="Apresenta" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
   }
   videoWrap.addEventListener('click', loadVideo);
-  videoWrap.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); loadVideo(); }});
+  videoWrap.addEventListener('keydown', function(e){ if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); loadVideo(); }});
 }
 
 /* ==========================================
    REPOSICIONAR CONFETTI AO RESIZE
    ========================================== */
-window.addEventListener('resize', () => {
-  const canvas = document.getElementById('confettiCanvas');
+window.addEventListener('resize', function(){
+  var canvas = document.getElementById('confettiCanvas');
   if (canvas){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 }, {passive:true});
 </script>
-
-</body>
-</html>
-/script>
 
 </body>
 </html>
