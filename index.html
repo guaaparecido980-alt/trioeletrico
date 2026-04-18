@@ -174,8 +174,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
    TYPOGRAPHY
 ============================================ */
 h1,h2,h3,h4{font-family:'Inter',sans-serif;color:var(--text);letter-spacing:-.02em;line-height:1.1;font-weight:700}
-h1{font-size:clamp(2.1rem,6.5vw,5rem);font-weight:800;letter-spacing:-.035em;word-break:break-word;overflow-wrap:break-word;hyphens:auto}
-h2{font-size:clamp(1.75rem,4.2vw,3.5rem);font-weight:800;word-break:break-word;overflow-wrap:break-word}
+h1{font-size:clamp(2.1rem,6.5vw,5rem);font-weight:800;letter-spacing:-.035em;overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none;text-wrap:balance}
+h2{font-size:clamp(1.75rem,4.2vw,3.5rem);font-weight:800;overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none;text-wrap:balance}
 h3{font-size:clamp(1.3rem,2.2vw,1.8rem);font-weight:700}
 p{color:var(--text-dim);font-size:1.05rem;line-height:1.7}
 
@@ -580,7 +580,7 @@ section{padding:clamp(4rem,9vw,7rem) 0;position:relative}
 }
 .sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;position:relative;z-index:2;min-width:0}
 .sim-left,.sim-right{min-width:0}
-.sim-left h2{font-size:clamp(1.6rem,5.5vw,2.5rem);margin-bottom:1rem;word-break:break-word;overflow-wrap:break-word;hyphens:auto}
+.sim-left h2{font-size:clamp(1.6rem,5.5vw,2.5rem);margin-bottom:1rem;overflow-wrap:break-word;word-break:normal;hyphens:none;-webkit-hyphens:none;text-wrap:balance}
 .sim-left p{margin-bottom:1.75rem;max-width:420px}
 .tabs{display:flex;gap:.35rem;background:#0A0A0A;border:1px solid var(--line);padding:.3rem;border-radius:100px;margin-bottom:1.5rem;min-width:0}
 .tab{
