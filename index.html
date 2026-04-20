@@ -220,8 +220,8 @@ ul { list-style: none; }
 }
 @media (max-width: 768px) { .container { padding: 0 20px; } }
 
-section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
-@media (max-width: 768px) { section { padding: 64px 0; } }
+section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
+@media (max-width: 768px) { section { padding: 48px 0; } }
 
 /* Tipografia de seção */
 .eyebrow {
@@ -2520,13 +2520,17 @@ function openMenu() {
   hamburger.setAttribute('aria-expanded', 'true');
   hamburger.setAttribute('aria-label', 'Fechar menu');
 }
-function closeMenu() {
+function closeMenu(options) {
+  const skipScrollRestore = options && options.skipScrollRestore;
   hamburger.classList.remove('active');
   menuMobile.classList.remove('open');
   document.body.classList.remove('menu-open');
   document.body.style.top = '';
   // Restaura a posição de scroll que estava antes de abrir
-  window.scrollTo(0, savedScroll);
+  // (só não restaura se vamos rolar para uma âncora em seguida)
+  if (!skipScrollRestore) {
+    window.scrollTo(0, savedScroll);
+  }
   hamburger.setAttribute('aria-expanded', 'false');
   hamburger.setAttribute('aria-label', 'Abrir menu');
 }
@@ -2535,20 +2539,22 @@ hamburger.addEventListener('click', () => {
 });
 menuMobile.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', (e) => {
-    // Fecha o menu e depois rola pro destino
     const href = a.getAttribute('href');
-    closeMenu();
-    // se for âncora interna, faz scroll suave após restaurar posição
+    // Se é âncora interna: fecha menu SEM restaurar scroll e rola pro destino
     if (href && href.startsWith('#') && href.length > 1) {
       e.preventDefault();
-      setTimeout(() => {
+      closeMenu({ skipScrollRestore: true });
+      requestAnimationFrame(() => {
         const target = document.querySelector(href);
         if (target) {
           const headerH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--header-h')) || 60;
           const top = target.getBoundingClientRect().top + window.scrollY - headerH - 10;
           window.scrollTo({ top, behavior: 'smooth' });
         }
-      }, 80);
+      });
+    } else {
+      // Link externo: fecha menu normalmente (restaura scroll)
+      closeMenu();
     }
   });
 });
