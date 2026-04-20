@@ -1417,10 +1417,10 @@ section { padding: clamp(48px, 6vw, 76px) 0; position: relative; }
 }
 @media (max-width: 900px) {
   .featured-image {
-    /* no mobile: não limita max-height para não conflitar com aspect-ratio em viewport estreito */
+    /* Ocupa 100% da largura disponível no container, sem max-width nem max-height */
     max-height: none;
-    max-width: 420px;
-    margin: 0 auto;
+    max-width: 100%;
+    aspect-ratio: 4/5;
   }
 }
 .featured-image::before {
