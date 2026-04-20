@@ -143,6 +143,9 @@
 }
 </script>
 
+<!-- Inline: marca html como JS ativo para ativar transições reveal -->
+<script>document.documentElement.classList.add('js-reveal');</script>
+
 <style>
 /* ============================================================
    VARIÁVEIS E RESET
@@ -1850,23 +1853,27 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 
 /* ============================================================
    REVEAL ON SCROLL
-   ============================================================ */
-.reveal {
+   ============================================================
+   Estratégia progressiva: só esconde os elementos SE o JS estiver
+   ativo (classe .js-reveal no <html>). Se JS falhar ou observer
+   não disparar, tudo continua visível por padrão. */
+.js-reveal .reveal {
   opacity: 0;
   transform: translateY(24px);
-  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal.d1 { transition-delay: 0.08s; }
-.reveal.d2 { transition-delay: 0.16s; }
-.reveal.d3 { transition-delay: 0.24s; }
-.reveal.d4 { transition-delay: 0.32s; }
+.js-reveal .reveal.visible { opacity: 1; transform: translateY(0); }
+.js-reveal .reveal.d1 { transition-delay: 0.06s; }
+.js-reveal .reveal.d2 { transition-delay: 0.12s; }
+.js-reveal .reveal.d3 { transition-delay: 0.18s; }
+.js-reveal .reveal.d4 { transition-delay: 0.24s; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+  .js-reveal .reveal { opacity: 1 !important; transform: none !important; }
 }
 
 /* Scrollbar */
@@ -2570,17 +2577,47 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 });
 
 /* ============================================================
-   REVEAL ON SCROLL
+   REVEAL ON SCROLL - threshold baixo + fallback automático
    ============================================================ */
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      e.target.classList.add('visible');
-      io.unobserve(e.target);
+const revealElements = document.querySelectorAll('.reveal');
+
+// Função que marca elementos visíveis (no viewport atual) como .visible
+function markVisibleInViewport() {
+  const vh = window.innerHeight;
+  revealElements.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    // Se qualquer parte estiver no viewport ou acima, marca como visível
+    if (rect.top < vh) {
+      el.classList.add('visible');
     }
   });
-}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+}
+
+// Marca os que já estão visíveis ao carregar
+markVisibleInViewport();
+
+// Observer para elementos que entrarem depois (com threshold bem baixo)
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.01, rootMargin: '0px 0px -40px 0px' });
+  revealElements.forEach(el => {
+    if (!el.classList.contains('visible')) io.observe(el);
+  });
+} else {
+  // Fallback total se o navegador não suportar
+  revealElements.forEach(el => el.classList.add('visible'));
+}
+
+// Fallback de segurança: se depois de 2.5s algum reveal ainda está oculto, mostra tudo
+setTimeout(() => {
+  revealElements.forEach(el => el.classList.add('visible'));
+}, 2500);
 
 /* ============================================================
    LIGHTBOX DA GALERIA
