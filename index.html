@@ -840,6 +840,19 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
 
 /* Diferenciais lista */
 .differentials { display: grid; gap: 12px; }
+.differentials-heading {
+  padding: 0 4px 8px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 4px;
+}
+.differentials-label {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
 .diff-item {
   display: flex;
   gap: 16px;
@@ -2049,7 +2062,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
       </h1>
 
       <p class="hero-sub">
-        Leve sua mensagem para as ruas com presença e impacto direto no seu público.
+        Leve sua mensagem direto para as ruas e aumente sua visibilidade com impacto real no seu público.
       </p>
 
       <div class="hero-cta">
@@ -2101,6 +2114,9 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 
       <!-- DIFERENCIAIS -->
       <div class="differentials reveal d2">
+        <div class="differentials-heading">
+          <span class="differentials-label">Por que escolher a Impact Eventos?</span>
+        </div>
         <div class="diff-item">
           <div class="diff-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
           <div><h4>Atendimento rápido e direto</h4><p>Resposta em minutos, sem precisar passar por atendente.</p></div>
