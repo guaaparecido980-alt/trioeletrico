@@ -437,68 +437,117 @@ section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
    ============================================================ */
 .hero {
   position: relative;
-  min-height: 92vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   padding-top: calc(var(--header-h) + 50px);
   padding-bottom: 80px;
   overflow: hidden;
-  background: #0a0a0a;
+  background: #050505;
   isolation: isolate;
 }
 @media (max-width: 768px) {
   .hero {
-    min-height: auto;
+    min-height: 85vh;
     padding-top: calc(var(--header-h) + 60px);
     padding-bottom: 60px;
   }
 }
 
-/* Imagem de fundo — SUBSTITUIR url() pela foto real do trio elétrico */
+/* ============================================================
+   HERO BACKGROUND com foto real do trio elétrico
+   ------------------------------------------------------------
+   Estrutura em camadas para profundidade visual:
+   .hero-bg         → imagem base com ken-burns (zoom lento)
+   .hero-bg::before → overlay escuro + gradiente horizontal
+                      (escurece lado esquerdo para destacar texto)
+   .hero-bg::after  → brilho âmbar sutil + grid decorativo
+   ============================================================ */
 .hero-bg {
   position: absolute;
   inset: 0;
   z-index: -2;
-  background:
-    linear-gradient(180deg, rgba(10,10,10,0.72) 0%, rgba(10,10,10,0.82) 65%, rgba(10,10,10,0.98) 100%),
-    linear-gradient(90deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.35) 60%, rgba(10,10,10,0.15) 100%),
-    url('https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=2000&q=80') center/cover;
+  overflow: hidden;
 }
+.hero-bg-img {
+  position: absolute;
+  inset: -5% -5% -5% -5%;
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+  object-position: center right;
+  animation: kenBurns 24s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@media (max-width: 768px) {
+  .hero-bg-img { object-position: 65% center; }
+}
+@keyframes kenBurns {
+  from { transform: scale(1) translateX(0); }
+  to { transform: scale(1.08) translateX(-1.5%); }
+}
+
+/* Overlay escuro principal */
 .hero-bg::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 60% 50% at 80% 40%, rgba(245,179,1,0.22), transparent 60%);
+  background:
+    linear-gradient(90deg, rgba(5,5,5,0.92) 0%, rgba(5,5,5,0.75) 35%, rgba(5,5,5,0.35) 70%, rgba(5,5,5,0.55) 100%),
+    linear-gradient(180deg, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0.3) 45%, rgba(5,5,5,0.85) 100%);
+  z-index: 1;
 }
+@media (max-width: 768px) {
+  .hero-bg::before {
+    background:
+      linear-gradient(180deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.6) 40%, rgba(5,5,5,0.85) 75%, rgba(5,5,5,0.96) 100%),
+      linear-gradient(90deg, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.4) 60%, rgba(5,5,5,0.5) 100%);
+  }
+}
+
+/* Brilho âmbar + grid sutil */
 .hero-bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 54px 54px;
-  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
-  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
+  z-index: 2;
+  background:
+    radial-gradient(ellipse 50% 40% at 85% 30%, rgba(245,179,1,0.18), transparent 65%),
+    radial-gradient(ellipse 40% 30% at 20% 80%, rgba(255,106,0,0.1), transparent 60%);
+  pointer-events: none;
 }
 
-.hero-content { position: relative; z-index: 1; max-width: 860px; }
+/* Linha de "scan" sutil na base */
+.hero::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5;
+  z-index: 3;
+}
+
+.hero-content { position: relative; z-index: 5; max-width: 720px; }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 16px;
-  border: 1px solid rgba(245,179,1,0.3);
-  background: rgba(245,179,1,0.07);
+  padding: 9px 18px;
+  border: 1px solid rgba(245,179,1,0.45);
+  background: rgba(10,10,10,0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border-radius: 999px;
   font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 26px;
+  margin-bottom: 28px;
   animation: fadeUp 0.8s 0.1s backwards;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
 }
 .hero-badge .pulse {
   width: 8px; height: 8px; border-radius: 50%;
@@ -513,39 +562,43 @@ section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
 
 .hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.5rem, 8vw, 6rem);
-  line-height: 0.92;
+  font-size: clamp(2.6rem, 8.5vw, 6.5rem);
+  line-height: 0.9;
   letter-spacing: 0.005em;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
   animation: fadeUp 0.9s 0.2s backwards;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.55);
 }
 .hero h1 .hl {
   color: var(--accent);
   position: relative;
   display: inline-block;
+  text-shadow: 0 2px 30px rgba(0,0,0,0.6), 0 0 40px rgba(245,179,1,0.2);
 }
 .hero h1 .hl::after {
   content: '';
   position: absolute;
-  left: 0; bottom: 4px;
-  width: 100%; height: 6px;
-  background: rgba(245,179,1,0.18);
+  left: 0; bottom: 6px;
+  width: 100%; height: 10px;
+  background: rgba(245,179,1,0.22);
   z-index: -1;
+  filter: blur(2px);
 }
 @media (max-width: 768px) {
-  .hero h1 { font-size: 2.5rem; line-height: 1; }
+  .hero h1 { font-size: 2.6rem; line-height: 0.95; }
 }
-@media (max-width: 380px) { .hero h1 { font-size: 2.1rem; } }
+@media (max-width: 380px) { .hero h1 { font-size: 2.2rem; } }
 
 .hero-sub {
-  font-size: 1.12rem;
-  color: #d4d4d8;
-  max-width: 580px;
-  margin-bottom: 38px;
+  font-size: 1.18rem;
+  color: #e4e4e7;
+  max-width: 520px;
+  margin-bottom: 40px;
   animation: fadeUp 1s 0.35s backwards;
   line-height: 1.55;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.5);
 }
-@media (max-width: 768px) { .hero-sub { font-size: 1rem; margin-bottom: 30px; } }
+@media (max-width: 768px) { .hero-sub { font-size: 1.02rem; margin-bottom: 32px; } }
 
 .hero-cta {
   display: flex;
@@ -570,18 +623,20 @@ section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
 }
 .hero-hl-item {
   padding: 16px 18px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border);
+  background: rgba(10,10,10,0.65);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 14px;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   transition: 0.25s;
   display: flex;
   align-items: center;
   gap: 12px;
+  box-shadow: 0 10px 30px -15px rgba(0,0,0,0.6);
 }
 .hero-hl-item:hover {
   border-color: var(--accent);
-  background: rgba(245,179,1,0.06);
+  background: rgba(245,179,1,0.1);
   transform: translateY(-2px);
 }
 .hero-hl-icon {
@@ -1460,7 +1515,13 @@ textarea.form-control { resize: vertical; min-height: 100px; }
      HERO
      ============================================================ -->
 <section class="hero" id="inicio">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg" aria-hidden="true">
+    <!-- Imagem responsiva: serve versão mobile em telas pequenas, desktop nas demais -->
+    <picture>
+      <source media="(max-width: 768px)" srcset="assets/hero-trio-mobile.jpg">
+      <img src="assets/hero-trio.jpg" alt="Trio elétrico em ação nas ruas de Curitiba" class="hero-bg-img" fetchpriority="high">
+    </picture>
+  </div>
   <div class="container">
     <div class="hero-content">
       <div class="hero-badge">
@@ -1470,17 +1531,17 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 
       <h1>
         Divulgação com<br>
-        Trio Elétrico para<br>
-        <span class="hl">Empresas e Eventos</span>
+        <span class="hl">Som Profissional</span><br>
+        em Curitiba
       </h1>
 
       <p class="hero-sub">
-        Leve sua mensagem para as ruas com som profissional, presença forte e atendimento rápido. Em Curitiba e toda a região metropolitana.
+        Leve sua mensagem para as ruas com presença e impacto direto no seu público.
       </p>
 
       <div class="hero-cta">
         <a href="#contato" class="btn btn-primary">
-          Solicitar orçamento
+          Solicitar orçamento agora
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
         <a href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20trio%20el%C3%A9trico." target="_blank" rel="noopener" class="btn btn-whatsapp">
