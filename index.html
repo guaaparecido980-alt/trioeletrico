@@ -1027,6 +1027,169 @@ section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
 }
 
 /* ============================================================
+   FEATURED EVENT - Miss Brasil Teen (destaque cinematográfico)
+   ============================================================ */
+.featured-event {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.featured-event::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background:
+    radial-gradient(ellipse 50% 40% at 15% 30%, rgba(245,179,1,0.08), transparent 55%),
+    radial-gradient(ellipse 40% 50% at 90% 70%, rgba(255,106,0,0.06), transparent 55%);
+  pointer-events: none;
+}
+.featured-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+}
+@media (max-width: 900px) {
+  .featured-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.featured-image {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,179,1,0.15);
+  aspect-ratio: 3/4;
+  max-height: 620px;
+}
+@media (max-width: 900px) {
+  .featured-image { max-height: 520px; }
+}
+.featured-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.85) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+.featured-image::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 80px; height: 80px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+  z-index: 3;
+  opacity: 0.85;
+}
+.featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+.featured-image:hover img { transform: scale(1.04); }
+
+.featured-badge-img {
+  position: absolute;
+  bottom: 20px; left: 20px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(10,10,10,0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(245,179,1,0.4);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.featured-badge-img svg { width: 14px; height: 14px; fill: var(--accent); }
+
+.featured-text .featured-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(245,179,1,0.1);
+  border: 1px solid rgba(245,179,1,0.3);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 22px;
+}
+.featured-text .featured-tag::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+.featured-text h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  line-height: 0.95;
+  margin-bottom: 24px;
+  letter-spacing: 0.005em;
+}
+.featured-text h2 .name {
+  color: var(--accent);
+  display: block;
+}
+.featured-text .featured-desc {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  margin-bottom: 28px;
+  max-width: 480px;
+}
+.featured-meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+@media (max-width: 520px) {
+  .featured-meta { grid-template-columns: 1fr; }
+}
+.featured-meta-item {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.featured-meta-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--text-mute);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.featured-meta-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.featured-meta-value.accent { color: var(--accent); }
+
+@media (max-width: 768px) {
+  .featured-text h2 { font-size: 2.1rem; }
+  .featured-text .featured-desc { font-size: 0.98rem; }
+}
+
+/* ============================================================
    PROVA SOCIAL (institucional, sem depoimentos fake)
    ============================================================ */
 .social-proof { background: var(--bg); border-top: 1px solid var(--border); }
@@ -1672,27 +1835,32 @@ textarea.form-control { resize: vertical; min-height: 100px; }
       <p class="section-lead">Estrutura prática, som de qualidade e presença nas ruas para destacar sua divulgação.</p>
     </div>
 
-    <!-- SUBSTITUIR URLs pelas fotos reais do seu caminhão/eventos -->
+    <!-- Galeria com fotos reais dos eventos -->
     <div class="gallery-grid reveal">
-      <div class="gallery-item large" data-img="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80">
-        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1200&q=80" alt="Trio elétrico em evento com público" loading="lazy">
-        <div class="gallery-overlay"><span>Ampliar →</span></div>
+      <!-- DESTAQUE PRINCIPAL: Trio com a bandeira do Brasil -->
+      <div class="gallery-item large" data-img="evento-bandeira.jpg">
+        <img src="evento-bandeira.jpg" alt="Trio elétrico em evento cívico com bandeira do Brasil" loading="lazy">
+        <div class="gallery-overlay"><span>Evento cívico →</span></div>
       </div>
+      <!-- DESTAQUE 2: Miss Brasil Teen 2025 -->
+      <div class="gallery-item" data-img="evento-miss-brasil.jpg">
+        <img src="evento-miss-brasil.jpg" alt="Miss Brasil Teen 2025 Kessilin de Paula em evento com trio elétrico" loading="lazy">
+        <div class="gallery-overlay"><span>Miss Brasil Teen →</span></div>
+      </div>
+      <!-- PLACEHOLDER para nova foto - troque a URL pela sua foto real -->
       <div class="gallery-item" data-img="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1600&q=80">
-        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80" alt="Público em evento com som potente" loading="lazy">
-        <div class="gallery-overlay"><span>Evento →</span></div>
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=80" alt="Público em evento com som" loading="lazy">
+        <div class="gallery-overlay"><span>Ver mais →</span></div>
       </div>
-      <div class="gallery-item" data-img="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=80">
-        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80" alt="Equipamento de som profissional" loading="lazy">
+      <!-- PLACEHOLDER - substitua por foto real -->
+      <div class="gallery-item" data-img="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1600&q=80">
+        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80" alt="Caminhão de som em ação" loading="lazy">
         <div class="gallery-overlay"><span>Estrutura →</span></div>
       </div>
-      <div class="gallery-item" data-img="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=1600&q=80">
-        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?auto=format&fit=crop&w=800&q=80" alt="Caminhão de som em ação na rua" loading="lazy">
-        <div class="gallery-overlay"><span>Caminhão →</span></div>
-      </div>
+      <!-- PLACEHOLDER - substitua por foto real -->
       <div class="gallery-item" data-img="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=1600&q=80">
-        <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=800&q=80" alt="Evento noturno com iluminação" loading="lazy">
-        <div class="gallery-overlay"><span>Noturno →</span></div>
+        <img src="https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=800&q=80" alt="Evento noturno" loading="lazy">
+        <div class="gallery-overlay"><span>Ver mais →</span></div>
       </div>
     </div>
 
@@ -1701,6 +1869,54 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Ver mais fotos no WhatsApp
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FEATURED EVENT - Destaque Miss Brasil Teen 2025
+     ============================================================ -->
+<section class="featured-event">
+  <div class="container">
+    <div class="featured-grid">
+      <div class="featured-image reveal">
+        <img src="evento-miss-brasil.jpg" alt="Miss Brasil Teen 2025 Kessilin de Paula com equipe de segurança no trio elétrico">
+        <div class="featured-badge-img">
+          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          Evento Oficial
+        </div>
+      </div>
+
+      <div class="featured-text reveal d2">
+        <span class="featured-tag">Case de destaque</span>
+        <h2>
+          Trio oficial da<br>
+          <span class="name">Miss Brasil Teen 2025</span>
+        </h2>
+        <p class="featured-desc">
+          Nossa estrutura foi escolhida para o evento de coroação da Miss Brasil Teen 2025, Kessilin de Paula. Quando o evento precisa de presença, segurança e impacto visual, a confiança vem de quem entrega resultado.
+        </p>
+
+        <div class="featured-meta">
+          <div class="featured-meta-item">
+            <div class="featured-meta-label">Ano</div>
+            <div class="featured-meta-value accent">2025</div>
+          </div>
+          <div class="featured-meta-item">
+            <div class="featured-meta-label">Evento</div>
+            <div class="featured-meta-value">Oficial</div>
+          </div>
+          <div class="featured-meta-item">
+            <div class="featured-meta-label">Local</div>
+            <div class="featured-meta-value">Curitiba</div>
+          </div>
+        </div>
+
+        <a href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20trio%20el%C3%A9trico." target="_blank" rel="noopener" class="btn btn-primary">
+          Quero esse mesmo padrão no meu evento
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -1772,35 +1988,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <span class="chip">Campina Grande do Sul</span>
         <span class="chip">Quatro Barras</span>
         <span class="chip">Região Metropolitana</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     PROVA SOCIAL
-     ============================================================ -->
-<section class="social-proof">
-  <div class="container">
-    <div class="social-proof-wrap reveal">
-      <div class="eyebrow">Prova social</div>
-      <h2>Confiança de quem precisa<br><span class="accent">divulgar de verdade</span></h2>
-      <p>Empresas e clientes que precisam de agilidade e presença local encontram aqui uma solução prática e eficiente para divulgação.</p>
-      <!-- Substituir o texto acima por depoimentos reais quando disponíveis -->
-
-      <div class="tags">
-        <span class="tag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Agilidade no atendimento
-        </span>
-        <span class="tag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Presença local real
-        </span>
-        <span class="tag">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
-          Solução prática
-        </span>
       </div>
     </div>
   </div>
