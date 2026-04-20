@@ -934,35 +934,58 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
    GALERIA
    ============================================================ */
 .gallery { background: var(--bg); border-top: 1px solid var(--border); }
+
+/* Layout: vídeo em destaque à ESQUERDA (2 linhas), 2 fotos à DIREITA */
 .gallery-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: 1.3fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 16px;
   margin-bottom: 40px;
-  max-width: 1000px;
+  max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
+  /* Altura proporcional - mantém 9:16 do vídeo como referência */
+  aspect-ratio: 16/10;
 }
+
 .gallery-item {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius);
   border: 1px solid var(--border);
   cursor: pointer;
-  background: var(--bg-3);
-  transition: 0.35s;
-  aspect-ratio: 4/5;
-  min-height: 380px;
+  background: #000;
+  transition: border-color 0.25s ease, transform 0.35s ease;
 }
-.gallery-item.large { aspect-ratio: 3/4; }
+
+/* Vídeo em destaque ocupa as 2 linhas da esquerda */
+.gallery-item.gallery-video {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  cursor: default;
+  border: 1px solid rgba(245,179,1,0.25);
+  box-shadow: 0 0 40px -10px rgba(245,179,1,0.25);
+}
+
 .gallery-item img {
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
+  display: block;
 }
-.gallery-item:hover { border-color: var(--accent); }
-.gallery-item:hover img { transform: scale(1.05); }
-.gallery-item:hover .gallery-overlay { opacity: 1; }
+
+.gallery-item video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
+
+.gallery-item:not(.gallery-video):hover { border-color: var(--accent); }
+.gallery-item:not(.gallery-video):hover img { transform: scale(1.05); }
+.gallery-item:not(.gallery-video):hover .gallery-overlay { opacity: 1; }
+
 .gallery-overlay {
   position: absolute;
   inset: 0;
@@ -974,6 +997,7 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
   justify-content: flex-end;
   padding: 22px;
   gap: 6px;
+  z-index: 2;
 }
 .gallery-overlay .gallery-label {
   color: var(--text);
@@ -987,16 +1011,37 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-@media (max-width: 640px) {
+
+/* Barra decorativa âmbar no topo do vídeo */
+.gallery-video::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), var(--accent), transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* MOBILE: empilha em coluna única - vídeo primeiro, fotos depois */
+@media (max-width: 768px) {
   .gallery-grid {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
     gap: 14px;
+    aspect-ratio: auto;
   }
-  .gallery-item, .gallery-item.large {
+  .gallery-item.gallery-video {
+    grid-column: 1;
+    grid-row: 1;
+    aspect-ratio: 9/16;
+    max-height: 560px;
+  }
+  .gallery-item:not(.gallery-video) {
     aspect-ratio: 4/5;
-    min-height: auto;
   }
 }
+
 .gallery-cta {
   display: flex;
   justify-content: center;
@@ -1123,61 +1168,10 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
 }
 
 /* ============================================================
-   VIDEO SHOWCASE - Trio em ação (vídeo real)
+   CONTROLES DO VÍDEO NA GALERIA (badge, play, mute)
    ============================================================ */
-.video-showcase {
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-  position: relative;
-  overflow: hidden;
-}
-.video-showcase::before {
-  content: '';
-  position: absolute;
-  top: 20%; left: 50%;
-  transform: translateX(-50%);
-  width: 80%; height: 60%;
-  background: radial-gradient(ellipse, rgba(245,179,1,0.08), transparent 70%);
-  pointer-events: none;
-}
-.video-showcase-head {
-  text-align: center;
-  max-width: 760px;
-  margin: 0 auto 48px;
-}
-.video-showcase-head .eyebrow { justify-content: center; }
 
-.video-wrap {
-  position: relative;
-  max-width: 420px;
-  margin: 0 auto;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow:
-    0 40px 100px -30px rgba(0,0,0,0.9),
-    0 0 0 1px rgba(245,179,1,0.2),
-    0 0 60px -10px rgba(245,179,1,0.25);
-  aspect-ratio: 9/16;
-  background: #000;
-  isolation: isolate;
-}
-.video-wrap video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-/* Barra decorativa âmbar no topo do vídeo */
-.video-wrap::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), var(--accent), transparent);
-  z-index: 2;
-}
-
-/* Badge "AO VIVO" sobre o vídeo */
+/* Badge "TRABALHO REAL" sobre o vídeo */
 .video-badge {
   position: absolute;
   top: 16px; left: 16px;
@@ -1234,13 +1228,17 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
   0%, 100% { box-shadow: 0 15px 40px -10px rgba(245,179,1,0.6), 0 0 0 8px rgba(245,179,1,0.15); }
   50% { box-shadow: 0 15px 40px -10px rgba(245,179,1,0.7), 0 0 0 16px rgba(245,179,1,0.05); }
 }
+@media (max-width: 768px) {
+  .video-play { width: 64px; height: 64px; }
+  .video-play svg { width: 26px; height: 26px; }
+}
 
 /* Controle customizado de som */
 .video-mute {
   position: absolute;
   bottom: 16px; right: 16px;
   z-index: 3;
-  width: 44px; height: 44px;
+  width: 42px; height: 42px;
   border-radius: 50%;
   background: rgba(10,10,10,0.78);
   backdrop-filter: blur(10px);
@@ -1262,20 +1260,6 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
 .video-mute .icon-unmuted { display: none; }
 .video-mute.unmuted .icon-muted { display: none; }
 .video-mute.unmuted .icon-unmuted { display: block; }
-
-/* CTA abaixo do vídeo */
-.video-cta {
-  display: flex;
-  gap: 14px;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-top: 40px;
-}
-
-@media (max-width: 768px) {
-  .video-wrap { max-width: 320px; }
-  .video-showcase-head { margin-bottom: 32px; }
-}
 
 /* ============================================================
    FEATURED EVENT - Miss Brasil Teen (destaque cinematográfico)
@@ -1911,7 +1895,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
       <a href="#sobre">Sobre</a>
       <a href="#servicos">Serviços</a>
       <a href="#galeria">Galeria</a>
-      <a href="#video">Vídeo</a>
       <a href="#faq">FAQ</a>
       <a href="#contato">Contato</a>
     </nav>
@@ -1931,7 +1914,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     <a href="#sobre">Sobre</a>
     <a href="#servicos">Serviços</a>
     <a href="#galeria">Galeria</a>
-    <a href="#video">Vídeo em ação</a>
     <a href="#area">Região atendida</a>
     <a href="#faq">Perguntas frequentes</a>
     <a href="#contato">Contato</a>
@@ -2085,28 +2067,67 @@ textarea.form-control { resize: vertical; min-height: 100px; }
 </section>
 
 <!-- ============================================================
-     GALERIA
+     GALERIA + VÍDEO (mídia integrada)
      ============================================================ -->
 <section class="gallery" id="galeria">
   <div class="container">
     <div class="reveal">
-      <div class="eyebrow">Nossa estrutura</div>
-      <h2 class="section-title">Veja nosso trio<br>elétrico <span class="accent">em ação</span></h2>
-      <p class="section-lead">Estrutura prática, som de qualidade e presença nas ruas para destacar sua divulgação.</p>
+      <div class="eyebrow">Veja em movimento</div>
+      <h2 class="section-title">Nosso trio elétrico<br><span class="accent">em ação de verdade</span></h2>
+      <p class="section-lead">Estrutura real, trabalho real, entregas reais. Dá o play e veja como a gente trabalha nas ruas de Curitiba.</p>
     </div>
 
-    <!-- Galeria focada: apenas fotos reais. 
-         Quando tiver mais fotos, basta duplicar um <div class="gallery-item"> aqui. -->
+    <!-- Galeria integrada: vídeo em destaque + 2 fotos reais -->
     <div class="gallery-grid reveal">
-      <!-- Foto principal: trio com a bandeira do Brasil em evento -->
-      <div class="gallery-item large" data-img="evento-bandeira.jpg">
+      <!-- VÍDEO em destaque principal (grande, à esquerda) -->
+      <div class="gallery-item large gallery-video" id="video">
+        <video
+          id="showcaseVideo"
+          src="trio-em-acao.mp4"
+          poster="trio-em-acao-poster.png"
+          muted
+          playsinline
+          preload="metadata"
+          aria-label="Vídeo do trio elétrico Impact Eventos em ação"
+        ></video>
+
+        <!-- Badge TRABALHO REAL -->
+        <div class="video-badge">
+          <span class="live-dot"></span>
+          Trabalho real
+        </div>
+
+        <!-- Botão de play central -->
+        <button class="video-play" id="videoPlay" aria-label="Reproduzir vídeo">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+        </button>
+
+        <!-- Botão mute -->
+        <button class="video-mute" id="videoMute" aria-label="Ativar som">
+          <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+          <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Foto 1: Trio com a bandeira do Brasil -->
+      <div class="gallery-item" data-img="evento-bandeira.jpg">
         <img src="evento-bandeira.jpg" alt="Trio elétrico Impact Eventos em evento cívico com bandeira do Brasil em Curitiba" loading="lazy">
         <div class="gallery-overlay">
           <span class="gallery-label">Evento cívico · Curitiba</span>
           <span class="gallery-zoom">Ver ampliada →</span>
         </div>
       </div>
-      <!-- Frame do vídeo / caminhão com marca -->
+
+      <!-- Foto 2: Caminhão com logo e telefone -->
       <div class="gallery-item" data-img="trio-em-acao-poster.png">
         <img src="trio-em-acao-poster.png" alt="Caminhão Impact Eventos com logotipo e WhatsApp (41) 99986-1500" loading="lazy">
         <div class="gallery-overlay">
@@ -2117,6 +2138,10 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     </div>
 
     <div class="gallery-cta reveal">
+      <a href="#contato" class="btn btn-primary">
+        Quero isso no meu evento
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
       <a href="https://wa.me/5541999861500?text=Ol%C3%A1%2C%20gostaria%20de%20ver%20mais%20fotos%20e%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn btn-whatsapp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Ver mais fotos no WhatsApp
@@ -2169,66 +2194,6 @@ textarea.form-control { resize: vertical; min-height: 100px; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================================================
-     VIDEO SHOWCASE - Trio em ação (vídeo real)
-     ============================================================ -->
-<section class="video-showcase" id="video">
-  <div class="container">
-    <div class="video-showcase-head reveal">
-      <div class="eyebrow">Veja em movimento</div>
-      <h2 class="section-title">Nosso trio elétrico<br><span class="accent">em ação de verdade</span></h2>
-      <p class="section-lead" style="margin-left:auto;margin-right:auto;">Estrutura real, trabalho real, entregas reais. Dá o play e veja como a gente trabalha.</p>
-    </div>
-
-    <div class="video-wrap reveal">
-      <div class="video-badge">
-        <span class="live-dot"></span>
-        Trabalho real
-      </div>
-
-      <video
-        id="showcaseVideo"
-        src="trio-em-acao.mp4"
-        poster="trio-em-acao-poster.png"
-        muted
-        playsinline
-        preload="metadata"
-        aria-label="Vídeo do trio elétrico Impact Eventos em ação"
-      ></video>
-
-      <!-- Botão de play central, visível quando vídeo está pausado -->
-      <button class="video-play" id="videoPlay" aria-label="Reproduzir vídeo">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      </button>
-
-      <button class="video-mute" id="videoMute" aria-label="Ativar som">
-        <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <line x1="23" y1="9" x2="17" y2="15"/>
-          <line x1="17" y1="9" x2="23" y2="15"/>
-        </svg>
-        <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-          <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
-        </svg>
-      </button>
-    </div>
-
-    <div class="video-cta reveal">
-      <a href="#contato" class="btn btn-primary">
-        Quero isso no meu evento
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-      <a href="https://wa.me/5541999861500?text=Ol%C3%A1%2C%20vi%20o%20v%C3%ADdeo%20no%20site%20e%20quero%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn btn-whatsapp">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Falar no WhatsApp
-      </a>
     </div>
   </div>
 </section>
