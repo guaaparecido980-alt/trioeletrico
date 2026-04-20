@@ -933,6 +933,106 @@ section { padding: clamp(56px, 7vw, 90px) 0; position: relative; }
 /* ============================================================
    GALERIA
    ============================================================ */
+/* ============================================================
+   IMPACTO - Sua marca nas ruas (banner cinematográfico)
+   ============================================================ */
+.impact-section {
+  background: var(--bg-2);
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.impact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 55% 60% at 20% 50%, rgba(245,179,1,0.11), transparent 70%),
+    radial-gradient(ellipse 45% 50% at 85% 30%, rgba(255,106,0,0.08), transparent 65%);
+}
+.impact-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+}
+.impact-wrap .eyebrow { justify-content: center; }
+.impact-wrap h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 4rem);
+  line-height: 1.02;
+  margin-bottom: 24px;
+  letter-spacing: 0.005em;
+}
+.impact-wrap h2 .accent { color: var(--accent); }
+.impact-wrap p {
+  color: var(--text-dim);
+  font-size: 1.12rem;
+  line-height: 1.65;
+  max-width: 620px;
+  margin: 0 auto 36px;
+}
+@media (max-width: 768px) {
+  .impact-wrap h2 { font-size: 2rem; }
+  .impact-wrap p { font-size: 1rem; margin-bottom: 28px; }
+}
+
+/* 3 métricas de impacto visuais */
+.impact-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 40px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 640px) {
+  .impact-metrics { grid-template-columns: 1fr; gap: 12px; }
+}
+.impact-metric {
+  padding: 22px 18px;
+  background: rgba(10,10,10,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  transition: 0.25s;
+}
+.impact-metric:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.impact-metric .metric-icon {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(245,179,1,0.12);
+  border: 1px solid rgba(245,179,1,0.28);
+  border-radius: 10px;
+  color: var(--accent);
+}
+.impact-metric .metric-icon svg { width: 20px; height: 20px; }
+.impact-metric .metric-title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 4px;
+  letter-spacing: 0.01em;
+}
+.impact-metric .metric-desc {
+  font-size: 0.88rem;
+  color: var(--text-mute);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   GALERIA + VÍDEO
+   ============================================================ */
 .gallery { background: var(--bg); border-top: 1px solid var(--border); }
 
 /* Layout: vídeo em destaque à ESQUERDA (2 linhas), 2 fotos à DIREITA */
@@ -1995,7 +2095,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <div class="eyebrow">Posicionamento</div>
         <h2 class="section-title">A forma mais rápida de<br>divulgar seu <span class="accent">negócio ou evento</span></h2>
         <p>Nem toda divulgação precisa de uma mega estrutura. O que realmente funciona é estar no lugar certo, na hora certa, com uma comunicação que chama atenção.</p>
-        <p>Nosso trio elétrico é ideal para ações locais, promoções, eventos e campanhas que precisam gerar impacto direto nas ruas.</p>
+        <p>Nosso serviço é ideal para ações locais que precisam gerar impacto direto nas ruas.</p>
         <p style="color: var(--accent); font-weight: 600; font-size: 1.1rem; margin-top: 24px;">Simples, eficiente e com resultado.</p>
       </div>
 
@@ -2061,6 +2161,43 @@ textarea.form-control { resize: vertical; min-height: 100px; }
         <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 3h15v13H1zM16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
         <h3>Campanhas e carreatas</h3>
         <p>Perfeito para mobilizar pessoas e gerar visibilidade em ações públicas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     IMPACTO - Sua marca nas ruas todos os dias
+     ============================================================ -->
+<section class="impact-section">
+  <div class="container">
+    <div class="impact-wrap reveal">
+      <div class="eyebrow">Por que funciona</div>
+      <h2>Sua marca sendo vista<br>nas ruas <span class="accent">todos os dias</span></h2>
+      <p>A divulgação com som leva sua mensagem diretamente até o público, aumentando sua presença e visibilidade onde o cliente realmente está.</p>
+
+      <div class="impact-metrics">
+        <div class="impact-metric">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="metric-title">Presença local</div>
+          <div class="metric-desc">Sua marca circulando onde o público está</div>
+        </div>
+        <div class="impact-metric">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1v-6h3v4zM3 19a2 2 0 002 2h1v-6H3v4z"/></svg>
+          </div>
+          <div class="metric-title">Impacto direto</div>
+          <div class="metric-desc">Som que chama atenção na hora certa</div>
+        </div>
+        <div class="impact-metric">
+          <div class="metric-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+          </div>
+          <div class="metric-title">Alcance real</div>
+          <div class="metric-desc">Atinge quem banner fixo nunca alcança</div>
+        </div>
       </div>
     </div>
   </div>
