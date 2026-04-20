@@ -1027,6 +1027,131 @@ section { padding: clamp(70px, 9vw, 120px) 0; position: relative; }
 }
 
 /* ============================================================
+   VIDEO SHOWCASE - Trio em ação (vídeo real)
+   ============================================================ */
+.video-showcase {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+}
+.video-showcase::before {
+  content: '';
+  position: absolute;
+  top: 20%; left: 50%;
+  transform: translateX(-50%);
+  width: 80%; height: 60%;
+  background: radial-gradient(ellipse, rgba(245,179,1,0.08), transparent 70%);
+  pointer-events: none;
+}
+.video-showcase-head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto 48px;
+}
+.video-showcase-head .eyebrow { justify-content: center; }
+
+.video-wrap {
+  position: relative;
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow:
+    0 40px 100px -30px rgba(0,0,0,0.9),
+    0 0 0 1px rgba(245,179,1,0.2),
+    0 0 60px -10px rgba(245,179,1,0.25);
+  aspect-ratio: 9/16;
+  background: #000;
+  isolation: isolate;
+}
+.video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Barra decorativa âmbar no topo do vídeo */
+.video-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--accent), var(--accent-2), var(--accent), transparent);
+  z-index: 2;
+}
+
+/* Badge "AO VIVO" sobre o vídeo */
+.video-badge {
+  position: absolute;
+  top: 16px; left: 16px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(10,10,10,0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(245,179,1,0.35);
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+.video-badge .live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s infinite;
+}
+
+/* Controle customizado de som */
+.video-mute {
+  position: absolute;
+  bottom: 16px; right: 16px;
+  z-index: 3;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(10,10,10,0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.15);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  cursor: pointer;
+  transition: 0.25s;
+}
+.video-mute:hover {
+  background: var(--accent);
+  color: #0a0a0a;
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+.video-mute svg { width: 18px; height: 18px; }
+.video-mute .icon-unmuted { display: none; }
+.video-mute.unmuted .icon-muted { display: none; }
+.video-mute.unmuted .icon-unmuted { display: block; }
+
+/* CTA abaixo do vídeo */
+.video-cta {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .video-wrap { max-width: 320px; }
+  .video-showcase-head { margin-bottom: 32px; }
+}
+
+/* ============================================================
    FEATURED EVENT - Miss Brasil Teen (destaque cinematográfico)
    ============================================================ */
 .featured-event {
@@ -1645,6 +1770,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
       <a href="#sobre">Sobre</a>
       <a href="#servicos">Serviços</a>
       <a href="#galeria">Galeria</a>
+      <a href="#video">Vídeo</a>
       <a href="#faq">FAQ</a>
       <a href="#contato">Contato</a>
     </nav>
@@ -1664,6 +1790,7 @@ textarea.form-control { resize: vertical; min-height: 100px; }
     <a href="#sobre">Sobre</a>
     <a href="#servicos">Serviços</a>
     <a href="#galeria">Galeria</a>
+    <a href="#video">Vídeo em ação</a>
     <a href="#area">Região atendida</a>
     <a href="#faq">Perguntas frequentes</a>
     <a href="#contato">Contato</a>
@@ -1917,6 +2044,60 @@ textarea.form-control { resize: vertical; min-height: 100px; }
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
         </a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VIDEO SHOWCASE - Trio em ação (vídeo real)
+     ============================================================ -->
+<section class="video-showcase" id="video">
+  <div class="container">
+    <div class="video-showcase-head reveal">
+      <div class="eyebrow">Veja em movimento</div>
+      <h2 class="section-title">Nosso trio elétrico<br><span class="accent">em ação de verdade</span></h2>
+      <p class="section-lead" style="margin-left:auto;margin-right:auto;">Estrutura real, trabalho real, entregas reais. Dá o play e veja como a gente trabalha.</p>
+    </div>
+
+    <div class="video-wrap reveal">
+      <div class="video-badge">
+        <span class="live-dot"></span>
+        Trabalho real
+      </div>
+
+      <video
+        id="showcaseVideo"
+        src="trio-em-acao.mp4"
+        poster="trio-em-acao-poster.png"
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-label="Vídeo do trio elétrico Impact Eventos em ação"
+      ></video>
+
+      <button class="video-mute" id="videoMute" aria-label="Ativar som">
+        <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <line x1="23" y1="9" x2="17" y2="15"/>
+          <line x1="17" y1="9" x2="23" y2="15"/>
+        </svg>
+        <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="video-cta reveal">
+      <a href="#contato" class="btn btn-primary">
+        Quero isso no meu evento
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://wa.me/5541999999999?text=Ol%C3%A1%2C%20vi%20o%20v%C3%ADdeo%20no%20site%20e%20quero%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="btn btn-whatsapp">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.304-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Falar no WhatsApp
+      </a>
     </div>
   </div>
 </section>
@@ -2359,6 +2540,33 @@ tel.addEventListener('input', e => {
   else if (v.length > 0) v = v.replace(/(\d*)/, '($1');
   e.target.value = v;
 });
+
+/* ============================================================
+   VIDEO SHOWCASE - autoplay ao entrar na tela + controle de som
+   ============================================================ */
+const showcaseVideo = document.getElementById('showcaseVideo');
+const videoMute = document.getElementById('videoMute');
+
+if (showcaseVideo && videoMute) {
+  // Autoplay quando entra na tela, pausa quando sai
+  const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        showcaseVideo.play().catch(() => { /* navegador bloqueou, tudo bem */ });
+      } else {
+        showcaseVideo.pause();
+      }
+    });
+  }, { threshold: 0.4 });
+  videoObserver.observe(showcaseVideo);
+
+  // Toggle de som
+  videoMute.addEventListener('click', () => {
+    showcaseVideo.muted = !showcaseVideo.muted;
+    videoMute.classList.toggle('unmuted', !showcaseVideo.muted);
+    videoMute.setAttribute('aria-label', showcaseVideo.muted ? 'Ativar som' : 'Desativar som');
+  });
+}
 
 /* Ano dinâmico */
 document.getElementById('year').textContent = new Date().getFullYear();
