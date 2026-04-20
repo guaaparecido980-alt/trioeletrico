@@ -1413,9 +1413,15 @@ section { padding: clamp(48px, 6vw, 76px) 0; position: relative; }
   box-shadow: 0 40px 80px -30px rgba(0,0,0,0.8), 0 0 0 1px rgba(245,179,1,0.15);
   aspect-ratio: 3/4;
   max-height: 620px;
+  width: 100%;
 }
 @media (max-width: 900px) {
-  .featured-image { max-height: 520px; }
+  .featured-image {
+    /* no mobile: não limita max-height para não conflitar com aspect-ratio em viewport estreito */
+    max-height: none;
+    max-width: 420px;
+    margin: 0 auto;
+  }
 }
 .featured-image::before {
   content: '';
